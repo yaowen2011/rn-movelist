@@ -5,10 +5,11 @@ import {
     Text,
     ActivityIndicator,
     Image,
-    FlatList
+    FlatList,
+    TouchableOpacity
 } from 'react-native'
 
-
+import { Actions } from 'react-native-router-flux'
 export default class Movie extends React.Component {
     // 和constructor 作用一致 添加实例属性 this.state = {}
     state = {
@@ -34,11 +35,7 @@ export default class Movie extends React.Component {
             return (
                 <ActivityIndicator color="orange" size="large"></ActivityIndicator>
             )
-        } 
-
-        let liList = this.state.list.map((item) => {
-
-        })
+        }
 
         return (
             <FlatList 
@@ -95,21 +92,33 @@ export default class Movie extends React.Component {
             })
     }
 
+    // 跳转到详情页
+    goDetail(id) {
+        // 路由跳转 
+        Actions.detail({id})
+    }
 
     renderMovieItem({ item }) {
         return (
-            <View style={{flexDirection: 'row', padding: 10}}>
-                <Image 
-                    source={{ uri: item.images.small}} 
-                    style={{width: 105, height: 150, marginRight: 10}} 
-                />
-                <View style={{justifyContent: 'space-around'}}>
-                    <Text>电影名称：{ item.title }</Text>
-                    <Text>电影类型：{ item.genres.join(', ')} </Text>
-                    <Text>上映年份：{ item.year }</Text>
-                    <Text>豆瓣评分：{ item.rating.average }分 </Text>
+            <TouchableOpacity
+                activeOpacity={0.6}
+                onPress={() => {
+                    Actions.detail({id: item.id})
+                    }}>
+
+                <View style={{flexDirection: 'row', padding: 10}} >
+                    <Image 
+                        source={{ uri: item.images.small}} 
+                        style={{width: 105, height: 150, marginRight: 10}} 
+                    />
+                    <View style={{justifyContent: 'space-around'}}>
+                        <Text>电影名称：{ item.title }</Text>
+                        <Text>电影类型：{ item.genres.join(', ')} </Text>
+                        <Text>上映年份：{ item.year }</Text>
+                        <Text>豆瓣评分：{ item.rating.average }分 </Text>
+                    </View>
                 </View>
-            </View>
+            </TouchableOpacity>
         )
     }
 
